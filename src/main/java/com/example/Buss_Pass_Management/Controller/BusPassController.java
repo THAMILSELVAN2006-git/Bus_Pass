@@ -1,28 +1,26 @@
 package com.example.Buss_Pass_Management.Controller;
 
-
-
 import com.example.Buss_Pass_Management.Model.BusPass;
 import com.example.Buss_Pass_Management.Service.BusPassService;
-import com.example.Buss_Pass_Management.dto.BusPassDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 @RequestMapping("/api/buspass")
-@CrossOrigin("*")
 public class BusPassController {
+
 
     @Autowired
     private BusPassService service;
 
     @PostMapping
     public BusPass createPass(
-            @RequestBody BusPassDTO dto) {
+            @RequestBody BusPass bus) {
 
-        return service.createPass(dto);
+        return service.createPass(bus);
     }
 
     @GetMapping
@@ -40,9 +38,9 @@ public class BusPassController {
     @PutMapping("/{id}")
     public BusPass updatePass(
             @PathVariable Long id,
-            @RequestBody BusPassDTO dto) {
+            @RequestBody BusPass bus) {
 
-        return service.updatePass(id, dto);
+        return service.updatePass(id, bus);
     }
 
     @DeleteMapping("/{id}")
@@ -53,4 +51,5 @@ public class BusPassController {
 
         return "Deleted Successfully";
     }
+
 }

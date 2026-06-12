@@ -28,6 +28,8 @@ public class BusPass {
 
     private String status;
 
+
+
     public BusPass() {
     }
 

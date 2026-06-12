@@ -1,10 +1,7 @@
 package com.example.Buss_Pass_Management.Service;
 
-
-
 import com.example.Buss_Pass_Management.Model.BusPass;
 import com.example.Buss_Pass_Management.Repository.BusPassRepository;
-import com.example.Buss_Pass_Management.dto.BusPassDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,45 +10,37 @@ import java.util.List;
 @Service
 public class BusPassService {
 
+
     @Autowired
     private BusPassRepository repository;
 
-    // Create
-    public BusPass createPass(BusPassDTO dto) {
+    public BusPass createPass(BusPass bus) {
 
-        BusPass pass = new BusPass();
+        bus.setStatus("PENDING");
 
-        pass.setStudentName(dto.getStudentName());
-        pass.setDepartment(dto.getDepartment());
-        pass.setSource(dto.getSource());
-        pass.setDestination(dto.getDestination());
-        pass.setPassType(dto.getPassType());
-        pass.setStatus("PENDING");
-
-        return repository.save(pass);
+        return repository.save(bus);
     }
 
-    // Get All
     public List<BusPass> getAllPasses() {
         return repository.findAll();
     }
 
-    // Get By Id
     public BusPass getPassById(Long id) {
         return repository.findById(id).orElse(null);
     }
 
-    // Update
-    public BusPass updatePass(Long id, BusPassDTO dto) {
+    public BusPass updatePass(Long id, BusPass bus) {
 
-        BusPass pass = repository.findById(id).orElse(null);
+        BusPass pass =
+                repository.findById(id).orElse(null);
 
         if (pass != null) {
-            pass.setStudentName(dto.getStudentName());
-            pass.setDepartment(dto.getDepartment());
-            pass.setSource(dto.getSource());
-            pass.setDestination(dto.getDestination());
-            pass.setPassType(dto.getPassType());
+
+            pass.setStudentName(bus.getStudentName());
+            pass.setDepartment(bus.getDepartment());
+            pass.setSource(bus.getSource());
+            pass.setDestination(bus.getDestination());
+            pass.setPassType(bus.getPassType());
 
             return repository.save(pass);
         }
@@ -59,8 +48,31 @@ public class BusPassService {
         return null;
     }
 
-    // Delete
     public void deletePass(Long id) {
         repository.deleteById(id);
     }
+
+    public void approvePass(Long id){
+
+        BusPass pass =
+                repository.findById(id).orElse(null);
+
+        if(pass != null){
+            pass.setStatus("APPROVED");
+            repository.save(pass);
+        }
+    }
+
+    public void rejectPass(Long id){
+
+        BusPass pass =
+                repository.findById(id).orElse(null);
+
+        if(pass != null){
+            pass.setStatus("REJECTED");
+            repository.save(pass);
+        }
+    }
+
+
 }
